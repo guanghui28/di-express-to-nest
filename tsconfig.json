@@ -8,8 +8,14 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "src"
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "types": ["node"],
+    "paths": {
+      "@/*": ["./src/*"] // Đường dẫn tương đối cho các import (alias)
+    }
   },
+  "files": ["src/types.d.ts"],
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
