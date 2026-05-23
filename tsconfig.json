@@ -1,9 +1,11 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "strict": true,
+    "noEmit": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -11,11 +13,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "types": ["node"],
+    "strictNullChecks": true,
     "paths": {
       "@/*": ["./src/*"] // Đường dẫn tương đối cho các import (alias)
     }
   },
   "files": ["src/types.d.ts"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
