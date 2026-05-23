@@ -16,7 +16,7 @@
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,js}": [
       "eslint --fix",
       "prettier --write"
     ]
@@ -25,6 +25,8 @@
     "express": "^5.2.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.1",

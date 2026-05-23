@@ -1,0 +1,9 @@
+#!/bin/sh
+
+npx --no -- commitlint --edit "$1" || {
+  echo ""
+  node ./scripts/commitlint-message.js
+  echo ""
+
+  exit 1
+}
