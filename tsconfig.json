@@ -1,7 +1,7 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "es2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
@@ -14,10 +14,7 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "types": ["node"],
-    "strictNullChecks": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "strictNullChecks": true
   },
   "files": ["src/types.d.ts"],
   "include": ["src/**/*.ts"],
