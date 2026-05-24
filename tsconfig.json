@@ -10,12 +10,13 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "rootDir": "./src",
     "outDir": "./dist",
     "types": ["node"],
     "strictNullChecks": true,
     "paths": {
-      "@/*": ["./src/*"] // Đường dẫn tương đối cho các import (alias)
+      "@/*": ["./src/*"]
     }
   },
   "files": ["src/types.d.ts"],
