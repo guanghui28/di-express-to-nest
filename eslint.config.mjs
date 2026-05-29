@@ -14,19 +14,7 @@ export default defineConfig([
    * Global ignores
    */
   {
-    ignores: [
-      'dist/**',
-      'node_modules/**',
-
-      // root files
-      '*.js',
-      '*.ts',
-      '*.mjs',
-      '*.cjs',
-
-      // optional
-      'coverage/**',
-    ],
+    ignores: ['dist/**', 'node_modules/**', 'scripts/**', '*.{js,ts,mjs,cjs}', 'coverage/**'],
   },
 
   /**
