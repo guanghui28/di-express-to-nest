@@ -1,6 +1,6 @@
-import { Controller } from '../decorators/constructor.decorator.ts';
-import { Get } from '../decorators/method.decorator.ts';
-import { UserService } from '../services/user.service.ts';
+import { Controller } from '@decorators/constructor.decorator';
+import { Get } from '@decorators/method.decorator';
+import { UserService } from '@services/user.service';
 
 @Controller('/users')
 export class UserController {

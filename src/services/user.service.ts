@@ -1,4 +1,4 @@
-import { Injectable } from '../decorators/constructor.decorator.ts';
+import { Injectable } from '@decorators/constructor.decorator';
 
 @Injectable()
 export class UserService {

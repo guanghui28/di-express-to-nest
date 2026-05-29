@@ -10,15 +10,47 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig([
+  /**
+   * Global ignores
+   */
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
-    plugins: { js },
-    extends: ['js/recommended'],
-    languageOptions: { globals: globals.node },
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+
+      // root files
+      '*.js',
+      '*.ts',
+      '*.mjs',
+      '*.cjs',
+
+      // optional
+      'coverage/**',
+    ],
   },
-  tseslint.configs.recommended,
+
+  /**
+   * Base JS config
+   */
   {
-    files: ['**/*.ts'],
+    files: ['src/**/*.{js,mjs,cjs,ts,mts,cts}'],
+
+    plugins: { js },
+
+    extends: ['js/recommended'],
+
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
+  /**
+   * TypeScript config
+   */
+  ...tseslint.configs.recommended,
+
+  {
+    files: ['src/**/*.ts'],
 
     languageOptions: {
       parserOptions: {
@@ -28,6 +60,7 @@ export default defineConfig([
 
       globals: globals.node,
     },
+
     rules: {
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -38,14 +71,23 @@ export default defineConfig([
           argsIgnorePattern: '^_',
         },
       ],
+
       '@typescript-eslint/no-explicit-any': 'error',
+
       '@typescript-eslint/no-unused-private-class-members': 'error',
-      '@/no-dupe-else-if': 'error',
-      '@/no-constructor-return': 'error',
+
+      'no-dupe-else-if': 'error',
+
+      'no-constructor-return': 'error',
+
       'consistent-return': 'error',
-      '@/no-else-return': ['error', { allowElseIf: false }],
+
+      'no-else-return': ['error', { allowElseIf: false }],
+
       '@typescript-eslint/unbound-method': ['error', { ignoreStatic: true }],
+
       '@typescript-eslint/no-floating-promises': 'error',
+
       '@typescript-eslint/explicit-member-accessibility': [
         'error',
         {
