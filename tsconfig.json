@@ -12,7 +12,8 @@
       "@controllers/*": ["./src/controllers/*"],
       "@decorators/*": ["./src/decorators/*"],
       "@services/*": ["./src/services/*"],
-      "@core/*": ["./src/core/*"]
+      "@core/*": ["./src/core/*"],
+      "@utils/*": ["./src/utils/*"]
     },
     "types": ["node"]
   },

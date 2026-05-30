@@ -1,13 +1,24 @@
 import { Controller } from '@decorators/controller.decorator';
-import { Get } from '@decorators/method.decorator';
+import { Get, Post } from '@decorators/method.decorator';
+import { Body } from '@decorators/param.decorator';
 import { UserService } from '@services/user.service';
 
-@Controller('/users')
+@Controller('/user')
 export class UserController {
   public constructor(private userService: UserService) {}
 
-  @Get('/')
-  public create() {
+  @Post('/')
+  public create(@Body() _body: object) {
     return this.userService.create();
+  }
+
+  @Get('/')
+  public find() {
+    return 'all users';
+  }
+
+  @Get('/:id')
+  public findOne() {
+    return 'a user';
   }
 }

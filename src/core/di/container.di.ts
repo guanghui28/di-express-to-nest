@@ -13,7 +13,7 @@ export class Container {
     this.services.set(constructor.name, constructor);
   }
 
-  public get<T>(constructor: Constructor<T>): T {
+  public get<T>(constructor: Constructor<T>): Constructor<T> {
     const service = this.services.get(constructor.name);
 
     if (!service) {
