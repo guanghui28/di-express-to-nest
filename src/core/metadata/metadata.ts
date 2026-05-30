@@ -45,6 +45,7 @@ export const setMetadata = (
       }
 
       descriptor.value.metadata[key] = value;
+
       return;
     }
 

@@ -8,6 +8,7 @@ import { combinePaths } from '@utils/common';
 import { RouteRegisterMiddleware } from '@core/middlewares/route-register.middleware';
 import { ControllerDecoratorMetadata, MethodDecoratorMetadata } from '@utils/types';
 import { ExecuteHandlerMiddleware } from '@core/middlewares/execute-handler.middleware';
+import { ErrorHandlerMiddleware } from '@core/middlewares/error-handler.middleware';
 
 type AppManagerOptions = {
   controllers?: Constructor<any>[];
@@ -33,12 +34,15 @@ export class AppManager {
     this.applyMiddlewares(...this.middlewares);
     this.registerRoutes();
     this.applyMiddlewares(ExecuteHandlerMiddleware);
+    this.applyMiddlewares(ErrorHandlerMiddleware);
+
     return this.app;
   }
 
   private registerDI(): void {
     this.instances = this.controllers.map((controller) => {
       this.container.register(controller);
+
       return this.container.get(controller);
     });
   }

@@ -37,6 +37,23 @@ export default defineConfig([
           exceptAfterSingleLine: true,
         },
       ],
+      'padding-line-between-statements': [
+        'error',
+
+        // blank line after block-like statements
+        {
+          blankLine: 'always',
+          prev: ['if', 'for', 'while', 'do', 'switch', 'try'],
+          next: '*',
+        },
+
+        // blank line before return
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: 'return',
+        },
+      ],
     },
 
     extends: ['js/recommended'],

@@ -8,7 +8,9 @@ export class ExecuteHandlerMiddleware implements AppMiddleware {
     const { context } = req;
 
     if (!context) {
-      throw new Error();
+      next(new Error('hehe'));
+
+      return;
     }
 
     const { instance, handlerName } = context;
@@ -18,9 +20,7 @@ export class ExecuteHandlerMiddleware implements AppMiddleware {
 
       res.send(result);
     } catch (error) {
-      console.log('Error from somewhere', error);
-
-      next();
+      next(error);
     }
   }
 }

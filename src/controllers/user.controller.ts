@@ -1,3 +1,4 @@
+import { BadRequestException } from '@core/base/error.base';
 import { Controller } from '@decorators/controller.decorator';
 import { Get, Post } from '@decorators/method.decorator';
 import { Body } from '@decorators/param.decorator';
@@ -14,7 +15,8 @@ export class UserController {
 
   @Get('/')
   public find() {
-    throw new Error('Server error');
+    throw new BadRequestException('unauthorized');
+
     return 'all users';
   }
 
