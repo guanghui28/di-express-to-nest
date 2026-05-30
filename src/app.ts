@@ -1,18 +1,16 @@
 import 'reflect-metadata';
-import express from 'express';
-import { Container } from '@core/di/container.di';
 import { UserController } from '@controllers/user.controller';
+import { AppManager } from '@core/app.manager';
 
-const container = new Container();
-container.register(UserController);
-container.get(UserController);
+const appManger = new AppManager({
+  controllers: [UserController],
+});
 
-const app = express();
+const app = appManger.init();
 
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-  console.log('request received: ', req);
   res.send('Hello World!');
 });
 

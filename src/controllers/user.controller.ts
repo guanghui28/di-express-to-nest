@@ -1,4 +1,4 @@
-import { Controller } from '@decorators/constructor.decorator';
+import { Controller } from '@decorators/controller.decorator';
 import { Get } from '@decorators/method.decorator';
 import { UserService } from '@services/user.service';
 
