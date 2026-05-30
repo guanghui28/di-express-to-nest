@@ -4,6 +4,7 @@ import { AppManager } from '@core/app.manager';
 
 const appManger = new AppManager({
   controllers: [UserController],
+  middlewares: [],
 });
 
 const app = appManger.init();

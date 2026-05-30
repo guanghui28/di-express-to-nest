@@ -6,13 +6,13 @@ import { NextFunction, Response } from 'express';
 export class RouteRegisterMiddleware implements AppMiddleware {
   public constructor(
     private instance: Constructor<any>,
-    private methodName: string,
+    private handlerName: string,
   ) {}
 
   public use(req: AppRequest, res: Response, next: NextFunction): void {
     const context = {
       instance: this.instance,
-      methodName: this.methodName,
+      handlerName: this.handlerName,
     };
 
     req.context = context;

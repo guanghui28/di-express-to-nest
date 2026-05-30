@@ -14,6 +14,7 @@ export class UserController {
 
   @Get('/')
   public find() {
+    throw new Error('Server error');
     return 'all users';
   }
 

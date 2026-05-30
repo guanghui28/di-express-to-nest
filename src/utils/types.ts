@@ -4,7 +4,7 @@ import { Request } from 'express';
 export interface AppRequest extends Request {
   context?: {
     instance: Constructor<any>;
-    methodName: string;
+    handlerName: string;
   };
 }
 
