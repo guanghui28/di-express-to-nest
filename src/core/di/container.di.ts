@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-type Constructor<T = any> = new (...args: any[]) => T;
-
 export class Container {
   private readonly services: Map<string, Constructor<any>>;
   private readonly registered: Map<string, any>;

@@ -2,6 +2,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import { defineConfig } from 'eslint/config';
+import stylistic from '@stylistic/eslint-plugin';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -23,7 +24,20 @@ export default defineConfig([
   {
     files: ['src/**/*.{js,mjs,cjs,ts,mts,cts}'],
 
-    plugins: { js },
+    plugins: {
+      js,
+      '@stylistic': stylistic,
+    },
+
+    rules: {
+      '@stylistic/lines-between-class-members': [
+        'error',
+        'always',
+        {
+          exceptAfterSingleLine: true,
+        },
+      ],
+    },
 
     extends: ['js/recommended'],
 
