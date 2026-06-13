@@ -2,9 +2,10 @@ import 'reflect-metadata';
 import { UserController } from '@controllers/user.controller';
 import { AppManager } from '@core/app.manager';
 
+global.DEBUG = false;
+
 const appManger = new AppManager({
   controllers: [UserController],
-  middlewares: [],
 });
 
 const app = appManger.init();
