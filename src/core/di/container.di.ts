@@ -13,7 +13,7 @@ export class Container {
     this.services.set(constructor.name, constructor);
   }
 
-  public get<T>(constructor: Constructor<T>): Constructor<T> {
+  public get<T>(constructor: Constructor<T>): InstanceType<Constructor<T>> {
     const service = this.services.get(constructor.name);
 
     if (!service) {
@@ -26,7 +26,9 @@ export class Container {
 
     const dependencies: Constructor<any>[] = Reflect.getMetadata('design:paramtypes', service) ?? [];
 
-    console.log(`DEPS of ${service.name}: `, dependencies);
+    if (DEBUG) {
+      console.log(`DEPS of ${service.name}: `, dependencies);
+    }
 
     const instanceOfDependencies = dependencies.map((dep) => {
       if (!this.services.has(dep.name)) {

@@ -7,5 +7,3 @@ export const combinePaths = (...paths: string[]): string => {
       .join('/')
   );
 };
-
-console.log(combinePaths('/users/', '/'));

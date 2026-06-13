@@ -6,6 +6,9 @@ export interface AppRequest extends Request {
     instance: Constructor<any>;
     handlerName: string;
   };
+  locals?: {
+    data: unknown;
+  };
 }
 
 export type ControllerDecoratorMetadata = {

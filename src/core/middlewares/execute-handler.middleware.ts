@@ -7,19 +7,17 @@ export class ExecuteHandlerMiddleware implements AppMiddleware {
   public async use(req: AppRequest, res: Response, next: NextFunction): Promise<void> {
     const { context } = req;
 
-    if (!context) {
-      next(new Error('hehe'));
-
-      return;
-    }
-
-    const { instance, handlerName } = context;
-
     try {
-      const result = await (instance as any)[handlerName](req, res, next);
+      if (!context) {
+        throw new Error('No route handler found for this request!');
+      }
 
-      res.send(result);
+      const { instance, handlerName } = context;
+      const result = await (instance as any)[handlerName](req, res, next);
+      res.locals.data = result;
+      next();
     } catch (error) {
+      console.log('throw error: ', error);
       next(error);
     }
   }

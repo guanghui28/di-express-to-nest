@@ -4,7 +4,7 @@ import { AppRequest } from '@utils/types';
 import { Response, NextFunction } from 'express';
 
 export class ErrorHandlerMiddleware implements AppErrorMiddleware {
-  public use(error: Error, _req: AppRequest, res: Response, _next: NextFunction): void {
+  public use(error: Error, req: AppRequest, res: Response, _next: NextFunction): void {
     let message = 'Internal Error';
     let statusCode = 500;
 

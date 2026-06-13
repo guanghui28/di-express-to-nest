@@ -17,10 +17,6 @@ export class RouteRegisterMiddleware implements AppMiddleware {
 
     req.context = context;
 
-    console.log({
-      context,
-    });
-
     next();
   }
 }

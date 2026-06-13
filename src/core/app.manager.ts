@@ -1,18 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import express, { Router } from 'express';
+import express from 'express';
 import { type Application } from 'express';
 import { Container } from '@core/di/container.di';
-import { getMetadata } from '@core/metadata/metadata';
-import { METADATA_KEY } from '@utils/constants';
-import { combinePaths } from '@utils/common';
-import { RouteRegisterMiddleware } from '@core/middlewares/route-register.middleware';
-import { ControllerDecoratorMetadata, MethodDecoratorMetadata } from '@utils/types';
 import { ExecuteHandlerMiddleware } from '@core/middlewares/execute-handler.middleware';
 import { ErrorHandlerMiddleware } from '@core/middlewares/error-handler.middleware';
+import { ResponseFormatter } from './middlewares/response-formatter.middleware';
+import { NotFoundHandlerMiddleware } from './middlewares/404-handler.middleware';
+import { routeRegister } from './routes/route-register.route';
+import { AppMiddleware } from './base/middleware.base';
+import { AppErrorMiddleware } from './base/error-middleware.base';
+
+type UnknownMiddleware = (...args: any[]) => void;
+type UsableConstructor = Constructor<AppMiddleware | AppErrorMiddleware>;
+
+type UsableType = UsableConstructor | UnknownMiddleware;
+
+function isMiddlewareClass(middleware: UsableType): middleware is UsableConstructor {
+  return typeof middleware === 'function' && typeof middleware.prototype?.use === 'function';
+}
 
 type AppManagerOptions = {
-  controllers?: Constructor<any>[];
-  middlewares?: any[];
+  controllers?: Constructor[];
+  middlewares?: UsableType[];
+  interceptors?: UsableType[];
 };
 
 export class AppManager {
@@ -20,21 +30,26 @@ export class AppManager {
   private readonly app: Application;
   private readonly container: Container;
   private instances!: Constructor<any>[];
-  private readonly middlewares: any[];
+  private readonly middlewares: UsableType[];
+  private readonly interceptors: UsableType[];
 
-  public constructor({ controllers = [], middlewares = [] }: AppManagerOptions) {
+  public constructor({ controllers = [], middlewares = [], interceptors = [] }: AppManagerOptions) {
     this.controllers = controllers;
     this.middlewares = middlewares;
+    this.interceptors = interceptors;
     this.app = express();
     this.container = new Container();
   }
 
   public init(): Application {
     this.registerDI();
-    this.applyMiddlewares(...this.middlewares);
+    this.applyMiddlewares(this.middlewares, 'middlewares');
     this.registerRoutes();
-    this.applyMiddlewares(ExecuteHandlerMiddleware);
-    this.applyMiddlewares(ErrorHandlerMiddleware);
+    this.applyMiddlewares([ExecuteHandlerMiddleware], 'guards');
+    this.applyMiddlewares(this.interceptors, 'interceptor');
+    this.applyMiddlewares([ResponseFormatter], 'formatter');
+    this.applyMiddlewares([NotFoundHandlerMiddleware], 'not found');
+    this.applyMiddlewares([ErrorHandlerMiddleware], 'errorhandling');
 
     return this.app;
   }
@@ -49,50 +64,27 @@ export class AppManager {
 
   private registerRoutes(): void {
     this.instances.forEach((instance) => {
-      const router = this.createRouter(instance);
+      const router = routeRegister(instance);
       this.app.use(router);
     });
   }
 
-  private createRouter(instance: Constructor<any>): Router {
-    const router = Router();
+  private applyMiddlewares(middlewares: UsableType[], debugName?: string): void {
+    if (DEBUG && debugName) {
+      console.log(`========== ${debugName.toUpperCase()} ==========`);
+    }
 
-    const { path: basePath } = getMetadata<ControllerDecoratorMetadata>(METADATA_KEY.CONTROLLER, instance.constructor);
-
-    const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(
-      (method) => method !== 'constructor',
-    );
-
-    methods.forEach((method) => {
-      const { httpMethod, path } = getMetadata<MethodDecoratorMetadata>(METADATA_KEY.METHOD, (instance as any)[method]);
-
-      const fullPath = combinePaths(basePath, path);
-
-      console.log({
-        httpMethod,
-        fullPath,
-      });
-
-      const routeMiddleware = new RouteRegisterMiddleware(instance, method);
-
-      (router as any)[httpMethod](fullPath, routeMiddleware.use.bind(routeMiddleware));
-    });
-
-    return router;
-  }
-
-  private applyMiddlewares(...middlewares: any[]): void {
     if (middlewares.length === 0) return;
 
     middlewares.forEach((middleware) => {
-      try {
+      if (isMiddlewareClass(middleware)) {
         new middleware();
 
         this.container.register(middleware);
         const instance = this.container.get(middleware);
 
-        this.app.use((instance as any).use.bind(instance));
-      } catch {
+        this.app.use(instance.use.bind(instance));
+      } else {
         this.app.use(middleware);
       }
     });
